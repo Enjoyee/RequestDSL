@@ -1,0 +1,13 @@
+ext {
+    /**
+     * 是否是开发环境
+     */
+    IS_DEV = "true"
+
+    android = [
+            compileSdkVersion: 30,
+            buildToolsVersion: "30.0.3",
+            minSdkVersion    : 21,
+            targetSdkVersion : 30
+    ]
+}
