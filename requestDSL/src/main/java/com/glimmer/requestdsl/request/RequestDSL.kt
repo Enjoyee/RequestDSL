@@ -56,6 +56,8 @@ object RequestDSL {
         val dsl = if (requestConfig != null) RequestConfig().also(requestConfig) else null
         // OKHttp Builder
         initOkHttpConfig(dsl)
+        // request Header
+        initRequestHeader(dsl)
         // Retrofit Builder
         initRetrofitConfig(dsl, baseUrl)
     }
@@ -65,6 +67,15 @@ object RequestDSL {
         mOkHttpBuilder = config?.mBuildOkHttp?.invoke(defaultOkHttpBuilder) ?: defaultOkHttpBuilder
         mLoggable = config?.mShowLog?.invoke() ?: true
         mOkHttpBuilder.addInterceptor(LoggingInterceptor())
+    }
+
+    private fun initRequestHeader(dsl: RequestConfig?) {
+        dsl?.mHeader?.invoke()?.iterator()?.let { iterator ->
+            while (iterator.hasNext()) {
+                val item = iterator.next()
+                putHead(item.key, item.value)
+            }
+        }
     }
 
     private fun initRetrofitConfig(config: RequestConfig?, baseUrl: String) {
@@ -83,14 +94,19 @@ object RequestDSL {
 class RequestConfig {
     internal var mShowLog: (() -> Boolean) = { true }
     internal var mBuildOkHttp: ((OkHttpClient.Builder) -> OkHttpClient.Builder)? = null
+    internal var mHeader: (() -> (Map<String, String>))? = null
     internal var mBuildRetrofit: ((Retrofit.Builder) -> Retrofit.Builder)? = null
 
-    fun showLog(showLog: (() -> Boolean)) {
+    fun showApiLog(showLog: (() -> Boolean)) {
         mShowLog = showLog
     }
 
     fun okHttp(builder: ((OkHttpClient.Builder) -> OkHttpClient.Builder)?) {
         mBuildOkHttp = builder
+    }
+
+    fun putHeader(header: (() -> (Map<String, String>))?) {
+        mHeader = header
     }
 
     fun retrofit(builder: ((Retrofit.Builder) -> Retrofit.Builder)?) {
