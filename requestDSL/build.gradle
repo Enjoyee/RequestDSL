@@ -43,7 +43,7 @@ dependencies {
     api "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     api "com.squareup.okhttp3:logging-interceptor:4.9.1"
     ////////////////////////////////////////////////////////////////////////
-    implementation 'com.github.Enjoyee:AndroidUtils:1.0.1'
+    implementation 'com.github.Enjoyee:AndroidUtils:1.0.2'
     ////////////////////////////////////////////////////////////////////////
 }
 

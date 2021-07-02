@@ -8,6 +8,7 @@ import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import timber.log.Timber
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
 
@@ -28,6 +29,9 @@ object RequestDSL {
         baseUrl: String,
         requestConfig: (RequestConfig.() -> Unit)? = null
     ) {
+        if (Timber.forest().isEmpty()) {
+            Timber.plant(Timber.DebugTree())
+        }
         mAppContext = appContext.applicationContext
         mHeaders = HeaderInterceptor()
         initConfig(requestConfig, baseUrl)
@@ -71,7 +75,7 @@ object RequestDSL {
         mLoggable = config?.mShowLog?.invoke() ?: true
         if (mLoggable) {
             mOkHttpBuilder.addInterceptor(HttpLoggingInterceptor { msg ->
-                msg.logD()
+                Timber.tag("OkHttp").d(msg)
             }.apply {
                 setLevel(HttpLoggingInterceptor.Level.BODY)
             })
