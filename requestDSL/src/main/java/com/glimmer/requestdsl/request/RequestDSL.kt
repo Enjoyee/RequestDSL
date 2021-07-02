@@ -2,8 +2,11 @@ package com.glimmer.requestdsl.request
 
 import android.content.Context
 import com.glimmer.requestdsl.gson.CustomizeGsonConverterFactory
+import com.glimmer.uutil.KLog
+import com.glimmer.uutil.logD
 import okhttp3.Cache
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.net.Proxy
 import java.util.concurrent.TimeUnit
@@ -66,7 +69,13 @@ object RequestDSL {
         val defaultOkHttpBuilder = getDefaultOkHttpBuilder(mAppContext)
         mOkHttpBuilder = config?.mBuildOkHttp?.invoke(defaultOkHttpBuilder) ?: defaultOkHttpBuilder
         mLoggable = config?.mShowLog?.invoke() ?: true
-        mOkHttpBuilder.addInterceptor(LoggingInterceptor())
+        if (mLoggable) {
+            mOkHttpBuilder.addInterceptor(HttpLoggingInterceptor { msg ->
+                msg.logD()
+            }.apply {
+                setLevel(HttpLoggingInterceptor.Level.BODY)
+            })
+        }
     }
 
     private fun initRequestHeader(dsl: RequestConfig?) {

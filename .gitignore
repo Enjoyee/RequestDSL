@@ -17,3 +17,10 @@ local.properties
 # Project exclude paths
 /requestDSL/build/
 /requestDSL/build/intermediates/javac/debug/classes/
+.idea/.gitignore
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/runConfigurations.xml
+.idea/vcs.xml
