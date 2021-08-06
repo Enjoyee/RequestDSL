@@ -8,11 +8,13 @@ class HeaderInterceptor : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val requestBuilder = chain.request().newBuilder()
-        mHeaders.forEach { (t, u) ->
+        getHeaders().forEach { (t, u) ->
             requestBuilder.addHeader(t, u)
         }
         return chain.proceed(requestBuilder.build())
     }
+
+    fun getHeaders() = hashMapOf<String, String>()
 
     fun put(key: String, value: String): HeaderInterceptor {
         mHeaders[key] = value

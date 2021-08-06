@@ -2,8 +2,6 @@ package com.glimmer.requestdsl.request
 
 import android.content.Context
 import com.glimmer.requestdsl.gson.CustomizeGsonConverterFactory
-import com.glimmer.uutil.KLog
-import com.glimmer.uutil.logD
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
